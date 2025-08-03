@@ -46,8 +46,8 @@ function run_triangulation() {
 
 function calculate_position(x1, z1, theta1, x2, z2, theta2) {
     
-    m1 = -Math.tan((theta1* Math.PI) / 180);
-    m2 = -Math.tan((theta2* Math.PI) / 180);
+    m1 = -Math.tan(((90  - theta1)* Math.PI) / 180);
+    m2 = -Math.tan(((90  - theta2)* Math.PI) / 180);
 
     
     M = math.matrix([
