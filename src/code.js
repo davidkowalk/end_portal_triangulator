@@ -38,7 +38,10 @@ function run_triangulation() {
     document.getElementById("zout").innerHTML = Math.round(10*output._data[1])/10;
 
 
-    runMonteCarlo(x1, z1, theta1, x2, z2, theta2, dx, dz, dtheta, N);
+    var [x_err, z_err] = runMonteCarlo(x1, z1, theta1, x2, z2, theta2, dx, dz, dtheta, output._data[0][0], output._data[1][0], N);
+
+    document.getElementById("dx").innerHTML = Math.round(10*x_err)/10;
+    document.getElementById("dz").innerHTML = Math.round(10*z_err)/10;
 }
 
 function calculate_position(x1, z1, theta1, x2, z2, theta2) {
@@ -62,74 +65,91 @@ function calculate_position(x1, z1, theta1, x2, z2, theta2) {
 
 
 
-function runMonteCarlo(x1_mean, z1_mean, theta1_mean, x2_mean, z2_mean, theta2_mean, dx, dz, dtheta, N = 10000) {
+function runMonteCarlo(x1_mean, z1_mean, theta1_mean, x2_mean, z2_mean, theta2_mean, dx, dz, dtheta, xnominal, znominal, N = 10000) {
   
-  const xResults = [];
-  const zResults = [];
-
-  for (let i = 0; i < N; i++) {
-    x1 = randomNormal(x1_mean, dx);
-    z1 = randomNormal(z1_mean, dz);
-    theta1 = randomNormal(theta1_mean, dtheta);
-
-    x2 = randomNormal(x2_mean, dx);
-    z2 = randomNormal(z2_mean, dz);
-    theta2 = randomNormal(theta2_mean, dtheta);
-
-    try {
-      const result = calculate_position(x1, z1, theta1, x2, z2, theta2);
-      const x = result._data[0][0];
-      const z = result._data[1][0];
-
-      if (isFinite(x) && isFinite(z)) {
-        xResults.push(x);
-        zResults.push(z);
+    const xResults = [];
+    const zResults = [];
+    
+    for (let i = 0; i < N; i++) {
+      x1 = randomNormal(x1_mean, dx);
+      z1 = randomNormal(z1_mean, dz);
+      theta1 = randomNormal(theta1_mean, dtheta);
+    
+      x2 = randomNormal(x2_mean, dx);
+      z2 = randomNormal(z2_mean, dz);
+      theta2 = randomNormal(theta2_mean, dtheta);
+    
+      try {
+        const result = calculate_position(x1, z1, theta1, x2, z2, theta2);
+        const x = result._data[0][0];
+        const z = result._data[1][0];
+        
+        if (isFinite(x) && isFinite(z)) {
+          xResults.push(x);
+          zResults.push(z);
+        }
+      } catch (err) {
+        // skip singular matrix or math errors
+        continue;
       }
-    } catch (err) {
-      // skip singular matrix or math errors
-      continue;
     }
-  }
-
-  if (xResults.length === 0) {
-    alert("Monte Carlo failed: No valid samples.");
-    return;
-  }
-
-  console.log(xResults);
-
-
-  // 2D histogram heatmap
-  const xMin = Math.floor(Math.min(...xResults));
-  const xMax = Math.ceil(Math.max(...xResults));
-  const zMin = Math.floor(Math.min(...zResults));
-  const zMax = Math.ceil(Math.max(...zResults));
-
-  const data = [{
-    x: xResults,
-    y: zResults,
-    type: 'histogram2d',
-    histnorm: 'probability density',
-    colorscale: 'Hot',
-    xbins: {
-      start: xMin,
-      end: xMax,
-      size: 1
-    },
-    ybins: {
-      start: zMin,
-      end: zMax,
-      size: 1
+  
+    if (xResults.length === 0) {
+      alert("Monte Carlo failed: No valid samples.");
+      return;
     }
-    }];
+  
+    console.log(xResults);
+  
+  
+    // 2D histogram heatmap
+    var x_min = Math.floor(Math.min(...xResults));
+    var x_max = Math.ceil(Math.max(...xResults));
+    var z_min = Math.floor(Math.min(...zResults));
+    var z_max = Math.ceil(Math.max(...zResults));
 
+    const max_size = 1000;
 
-  const layout = {
-    title: 'Estimated Probability Distribution (Monte Carlo)',
-    xaxis: { title: 'X' },
-    yaxis: { title: 'Z' },
-    height: 600
-  };
+    if (Math.abs(x_min - xnominal) > max_size) {x_min = xnominal - max_size};
+    if (Math.abs(x_max - xnominal) > max_size) {x_max = xnominal + max_size};
 
-  Plotly.newPlot('plot', data, layout);
+    if (Math.abs(z_min - znominal) > max_size) {z_min = znominal - max_size};
+    if (Math.abs(z_max - znominal) > max_size) {z_max = znominal + max_size};
+  
+    const data = [{
+      x: xResults,
+      y: zResults,
+      type: 'histogram2d',
+      histnorm: 'probability density',
+      colorscale: 'Hot',
+      xbins: {
+        start: x_min,
+        end: x_max,
+        size: 1
+      },
+      ybins: {
+        start: z_min,
+        end: z_max,
+        size: 1
+      }
+      }];
+    
+    
+    const layout = {
+      title: 'Estimated Probability Distribution (Monte Carlo)',
+      xaxis: { title: 'X' },
+      yaxis: { title: 'Z' },
+      height: 600
+    };
+  
+    Plotly.newPlot('plot', data, layout);
+
+    const xLower = math.quantileSeq(xResults, 0.15865, false);
+    const xUpper = math.quantileSeq(xResults, 0.84135, false);
+
+    const zLower = math.quantileSeq(zResults, 0.15865, false);
+    const zUpper = math.quantileSeq(zResults, 0.84135, false);
+
+    return [(xUpper - xLower) / 2, (zUpper - zLower) / 2]
+
 }
