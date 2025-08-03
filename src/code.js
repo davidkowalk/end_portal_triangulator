@@ -99,8 +99,6 @@ function runMonteCarlo(x1_mean, z1_mean, theta1_mean, x2_mean, z2_mean, theta2_m
       return;
     }
   
-    console.log(xResults);
-  
   
     // 2D histogram heatmap
     var x_min = Math.floor(Math.min(...xResults));
@@ -142,7 +140,7 @@ function runMonteCarlo(x1_mean, z1_mean, theta1_mean, x2_mean, z2_mean, theta2_m
         title: 'Z',
         autorange: "reversed"
        },
-      height: 600
+      height: 800
     };
   
     Plotly.newPlot('plot', data, layout);
