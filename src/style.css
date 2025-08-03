@@ -1,0 +1,77 @@
+body {
+    display: flex;
+    margin: 0;
+    font-family: sans-serif;
+    height: 100vh;
+}
+
+.left {
+      width: 30%;
+      padding: 20px;
+      background: #f9f9f9;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    }
+
+.right {
+  flex-grow: 1;
+  padding: 20px;
+}
+
+input_small {
+  display: block;
+  margin-bottom: 10px;
+  width: 40%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+input {
+  display: block;
+  margin-bottom: 10px;
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+button {
+  padding: 10px;
+  width: 100%;
+  background: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #0056b3;
+}
+
+
+.form-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.form-row > div {
+  flex: 1;
+}
+
+.collapsible-label {
+  font-weight: bold;
+  cursor: pointer;
+  color: #333;
+  padding: 5px 0;
+  margin-bottom: 10px;
+  user-select: none;
+}
+
+.collapsible-content {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.4s ease;
+}
+
+.collapsible-content.open {
+  max-height: 300px; /* Adjust if more space is needed */
+}
+
