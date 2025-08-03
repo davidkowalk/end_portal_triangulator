@@ -6,15 +6,15 @@
 
 # End Portal Triangulator
 
-The end portal triangulator is an application for minecraft players to calculate the position of an end portal using two consecutive throws of an ender pearl.
-The position is calculated using linear algebra and a monte carlo simulation is used to estimate the uncertainty.
+The end portal triangulator is an application for Minecraft players to calculate the position of an end portal using two consecutive throws of an ender pearl.
+The position is calculated using linear algebra and a Monte Carlo simulation is used to estimate the uncertainty.
 
 ## Installation
 
 The web app can be found in the `src` folder of the repository. It does not need to be installed.
-To run the app simply open `triangulate.html` in a web browser. Javascript needs to be enabled.
+To run the app simply open `triangulate.html` in a web browser. JavaScript needs to be enabled.
 
-The application pulls the dependencies of `plot.ly` and `math.js` from the internet, therefore a connection is required.
+The application pulls the dependencies of `Plotly` and `math.js` from the internet, therefore a connection is required.
 
 ## Example
 
