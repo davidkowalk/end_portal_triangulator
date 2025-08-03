@@ -138,7 +138,10 @@ function runMonteCarlo(x1_mean, z1_mean, theta1_mean, x2_mean, z2_mean, theta2_m
     const layout = {
       title: 'Estimated Probability Distribution (Monte Carlo)',
       xaxis: { title: 'X' },
-      yaxis: { title: 'Z' },
+      yaxis: {
+        title: 'Z',
+        autorange: "reversed"
+       },
       height: 600
     };
   
