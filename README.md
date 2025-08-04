@@ -16,6 +16,8 @@ To run the app simply open `triangulate.html` in a web browser. JavaScript needs
 
 The application pulls the dependencies of `Plotly` and `math.js` from the internet, therefore a connection is required.
 
+Alternatively you can visit the [online version hosted on GitHub Pages](https://davidkowalk.github.io/end_portal_triangulator/src/triangulate.html).
+
 ## User guide
 
 Two eyes of ender are required for triangulation.
