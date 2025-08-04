@@ -14,7 +14,7 @@
 \usepackage{graphicx, float}
 
 %Adds the draft watermark
-\isdraft
+%\isdraft
 
 % Title formatting
 \title{Stronghold Location via Triangulation and Error Estimation}
@@ -30,8 +30,11 @@
 \maketitle
 
 % Abstract with justification
-%\begin{abstract}
-%\end{abstract}
+\begin{abstract}
+    A formal method for triangulating the stronghold location with two eye of ender throws is derived.
+    To quantify the uncertainty of the measured location a Monte Carlo method is leveraged, accounting for user input error in position and yaw angle.
+    The presented tequnique is relevant to Minecraft Speedrunning and tool-assisted gameplay. The accompanying implementation offers an efficient and statistically informed 
+\end{abstract}
 
 %Use this when not including an abstract to print horizontal rule and keywords.
 %\noabstract
@@ -44,7 +47,7 @@
 \begin{multicols}{2}
 
     \section{Introduction}
-    Every Minecraft world has a total of 128 strongholds aranged in concentric rings around the origin of the coordinate system \cite{wiki_stronghold}.
+    Every Minecraft world has a total of 128 strongholds arranged in concentric rings around the origin of the coordinate system \cite{wiki_stronghold}.
     The intended way for a player to locate the closest stronghold is via the eye of ender item.
     When activated the eye of ender flies approximately 12 blocks in the direction of the north-west corner of the chunk containing the spiral staircase room of the stronghold.
     While the eye of ender targets the chunk coordinates (0, 0), the entrance to the stronghold is always generated at coordinates (4, 4).
@@ -56,7 +59,7 @@
     References \cite{tutorial_goosen} and \cite{tutorial_ben} date the methods to at least 2013.
 
     \section{Triangulation}
-    The location of the stronghold in the X-Z plane is calculated using two consecutaive throws of an eyes of ender.
+    The location of the stronghold in the X-Z plane is calculated using two consecutive throws of eyes of ender.
     For each throw the coordinate of the player is noted with the angle of the eyes trajectory via the debug screen \cite{wiki_debugscreen}.
     A large separation of the two location improves accuracy of the estimate.
     Let the target coordinates be
@@ -69,7 +72,7 @@
     \begin{equation}
         f_i(x) = m_i x - z_i^0
     \end{equation}
-    Fulfilling the necesarry requirement that
+    Fulfilling the necessary requirement that
     \begin{equation}
         f_i(x_i) = m_i x_i - z_i^0 = z_i \implies z_i^0 = m_i x_i - z_i
     \end{equation}
@@ -135,7 +138,7 @@
     \section{Error Estimation}
 
     A Monte Carlo simulation-method commonly known as a \enquote{parametric bootstrap} is used to compute the confidence statistics of the estimate \cite[53-56]{efron_1994_introductiontothebootstap}.
-    The errors from $x$, $z$, and $\theta$ measurements are assumend to be normally distributed and uncorrelated. Samples are drawn from the simulated probability density functions and the predicted stronghold position is calculated for each simulated measurement.
+    The errors from $x$, $z$, and $\theta$ measurements are assumed to be normally distributed and uncorrelated. Samples are drawn from the simulated probability density functions and the predicted stronghold position is calculated for each simulated measurement.
     Confidence intervals are chosen at the upper and lower quantile to correspond to a $1\sigma$ interval for $x$ and $z$ independently.
     Drawing a histogram for an example set of measurements reveals a strong correlation between the $x$ and the $z$ coordinate for measurements with little angular separation as an emergent property of the measurement. (Compare fig. \ref{fig:histo}.) 
 
@@ -148,7 +151,7 @@
 
     \section{Conclusion}
 
-    A method for triangulating the stronghold location is formally reintroduced and a numeric method for estimating the uncertainties is discussed. A localy running implementation using JavaScript can be found in ref. \cite{repo_triang}.
+    A method for triangulating the stronghold location is formally reintroduced and a numeric method for estimating the uncertainties is discussed. A locally running implementation using JavaScript can be found in ref. \cite{repo_triang}.
 \end{multicols}
 
 \printbibliography
